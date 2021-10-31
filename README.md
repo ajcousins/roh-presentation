@@ -7,6 +7,8 @@ A full stack web application which queries a database of technical lighting prod
 
 The app is exciting for me, as a person with several years of lighting design experience, I believe it can be the perfect tool to help plug a designer's gap in market knowledge. There is currently no go-to search engine that lighting designers can consult that focuses exclusively on architectural products. A few search tools currently catalogue decorative products, but are not able to filter down to technical specifications.
 
+![Dashboard](https://github.com/ajcousins/roh-presentation/blob/main/dashboard_01.png "Dashboard")
+
 [Live website](https://light-lookup.pages.dev/#/) |
 [Code repo](https://github.com/ajcousins/light-lookup)
 
@@ -74,11 +76,9 @@ module.exports = parseCsv;
 - When planning Light Lookup, the app had a long list of features I wanted to implement. However I quickly realised it would be several months before I would be able to deploy anything useable.
 - To overcome this, I have planned to structure the delivery in several phases which make sense to me. Version 1 is the minimum viable product, which is able to perform complex queries, add a basic manufacturer profile and add single products. The aim was to release this version as quickly as possible in around a 3 week timeframe for some initial feedback from a few lighting designers.
 
-![alt text](https://github.com/ajcousins/roh-presentation/blob/main/planning_01.png "Project Planning")
+![Planning](https://github.com/ajcousins/roh-presentation/blob/main/planning_01.png "Project Planning")
 
-- Version 1.1 implements a way to bulk upload products as opposed to entering them one at a time- more on this below.
-- As it stands, Light lookup is still very much a work in progress. I have been working on it alone for about a month and a half. It is still missing a lot of functionality: databases haven’t been populated and is still missing user registration and many other filtering methods.
-- Later versions go on to introduce more product fields that allows finer filtering, following some inital feedback.
+
 
 ## Resilience and Scalability
 - I opted to use GraphQL with scalability in mind for Light Lookup, mainly for its ability to be selective with what data it returns, as opposed to a RestAPI, which will 'over-fetch' data. The ‘Product’ database model already has quite a lot of fields, and a lot of this data is not relevant for a basic search.
@@ -94,15 +94,18 @@ module.exports = parseCsv;
 ## Working in a Test Environment and Moving to Deployment
 - Light Lookup has not gone through any thorough any test environments as my knowledge in this area is limited. 
 - I have used a suite of tests using Jest for the back-end and the built-in test suites in React for the front-end.
-- I intended to practise TDD on Light Lookup, but quickly realised it would be very time consuming to do this for every single component- so unit testing was focused to a few specific areas where I felt might be at risk. My intuition also told me it was better to manually test for visual UI elements in the web browser. An automated test wouldn’t necessarily let me know if a navigation element overflowed for example.
+- I intended to practise TDD on Light Lookup, but quickly realised it would be very time consuming to do this for every single component- so unit testing was focused to a few specific areas I felt might be at risk. 
+- My intuition also told me it was better to manually test for visual UI elements in the web browser. An automated test wouldn’t necessarily let me know if a navigation element overflowed for example.
 - Several unit tests were carried out on the data collection helper functions on the backend as I expect the data would eventually come from a variety of different manufacturers in all shapes and sizes or through web scraping. 
 
-<!-- code examples -->
+![Upload Check](https://github.com/ajcousins/roh-presentation/blob/main/unit-test_01.png "Upload Check")
 
 - Unit tests were also written for a few formatting elements in react on the client side.
 
-<!-- code examples -->
+![Format Check](https://github.com/ajcousins/roh-presentation/blob/main/unit-test_02.png "Format Check")
+![Format Check](https://github.com/ajcousins/roh-presentation/blob/main/unit-test_03.png "Format Check")
 
+- Site is deployed using Cloudflare, which is linked to the GitHub repository, allowing any updates to the main branch to be automatically deployed.
 
 
 
