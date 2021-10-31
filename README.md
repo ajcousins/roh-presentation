@@ -1,18 +1,11 @@
 # ROH Presentation
 
-
-
-
-
-
 ## Technical Challenges Encountered on a New Digital Product
 
 ### Light Lookup Introduction
 A full stack web application which queries a database of technical lighting products, intended for lighting designers and specifiers of technical lighting equipment, as a way to find suitable products to meet very specific design requirements.
 
 The app is exciting for me, as a person with several years of lighting design experience, I believe it can be the perfect tool to help plug a designer's gap in market knowledge. There is currently no go-to search engine that lighting designers can consult that focuses exclusively on architectural products. A few search tools currently catalogue decorative products, but are not able to filter down to technical specifications.
-
-The project was built with React and TypeScript on the front end, with Redux used for state management. The back end was built with Node.js, Express with a GraphQL endpoint which queries a MongoDB database.
 
 [Live website](https://light-lookup.pages.dev/#/) |
 [Code repo](https://github.com/ajcousins/light-lookup)
@@ -75,8 +68,11 @@ module.exports = parseCsv;
 <!--INSERT IMAGE-->
 
 ## Design and Development
+- The project was built with React and TypeScript on the front end, with Redux used for state management. Material UI was used for its React component library- mainly for the dashboard and form elements. I also used SASS with BEM class naming for organisation. The back end was built with Node.js, Express with a GraphQL endpoint which queries a MongoDB database. Firebase firestore was also used for image storage.
+- The use of Redux made sense to me on the front-end, as a way to manage state globally, especially for several form elements and the search dashboard itself. The user query made to the server is quite long and complex- so it made sense to break up the components into parts that could discretely manage each slice of the state in Redux.
+- TypeScript was a new language for me and I intended to learn as I built. But looking back, the use of TypeScript I believe was a good design decision. A good example are the props for React elements containing product information. The 'product' prop could be typechecked against a 'product' type and ensured no fields were missing when passing this through multiple components.
 - When planning Light Lookup, the app had a long list of features I wanted to implement. However I quickly realised it would be several months before I would be able to deploy anything useable.
-- I get around this, I have planned to structure the delivery in several phases which make sense to me. Version 1 is the minimum viable product, which is able to perform complex queries, add a basic manufacturer profile and add single products. The aim was to release this version as quickly as possible in around a 3 week timeframe for some initial feedback from a few lighting designers.
+- To overcome this, I have planned to structure the delivery in several phases which make sense to me. Version 1 is the minimum viable product, which is able to perform complex queries, add a basic manufacturer profile and add single products. The aim was to release this version as quickly as possible in around a 3 week timeframe for some initial feedback from a few lighting designers.
 
 ![alt text](https://github.com/ajcousins/roh-presentation/blob/main/planning_01.png "Project Planning")
 
@@ -96,12 +92,14 @@ module.exports = parseCsv;
 - Image resizing was a bit of a challenge for me, as it involved passing an image buffer to state and then formatting this before it is uploaded to Firebase. Using TypeScript on the frontend helped a lot in this situation and helped flagged bugs by typechecking.
 
 ## Working in a Test Environment and Moving to Deployment
-- I intended to implement TDD on Light Lookup, but quickly realised it would be very time consuming to do this for every single component. My intuition also told me it was better to manually test for visual UI elements in the web browser. An automated test wouldn’t necessarily let me know if a navigation element overflowed for example.
-- I focused TDD mainly on the data collection checkers on the backend as I expect the data would eventually come from a variety of different manufacturers in all shapes and sizes or through web scraping. 
+- Light Lookup has not gone through any thorough any test environments as my knowledge in this area is limited. 
+- I have used a suite of tests using Jest for the back-end and the built-in test suites in React for the front-end.
+- I intended to practise TDD on Light Lookup, but quickly realised it would be very time consuming to do this for every single component- so unit testing was focused to a few specific areas where I felt might be at risk. My intuition also told me it was better to manually test for visual UI elements in the web browser. An automated test wouldn’t necessarily let me know if a navigation element overflowed for example.
+- Several unit tests were carried out on the data collection helper functions on the backend as I expect the data would eventually come from a variety of different manufacturers in all shapes and sizes or through web scraping. 
 
 <!-- code examples -->
 
-- I also practised TDD on a few formatting elements in react on the client side.
+- Unit tests were also written for a few formatting elements in react on the client side.
 
 <!-- code examples -->
 
