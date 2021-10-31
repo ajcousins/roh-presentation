@@ -1,6 +1,13 @@
 # ROH Presentation
 
-## Light Lookup Introduction
+
+
+
+
+
+## Technical Challenges Encountered on a New Digital Product
+
+### Light Lookup Introduction
 A full stack web application which queries a database of technical lighting products, intended for lighting designers and specifiers of technical lighting equipment, as a way to find suitable products to meet very specific design requirements.
 
 The app is exciting for me, as a person with several years of lighting design experience, I believe it can be the perfect tool to help plug a designer's gap in market knowledge. There is currently no go-to search engine that lighting designers can consult that focuses exclusively on architectural products. A few search tools currently catalogue decorative products, but are not able to filter down to technical specifications.
@@ -9,15 +16,6 @@ The project was built with React and TypeScript on the front end, with Redux use
 
 [Live website](https://light-lookup.pages.dev/#/) |
 [Code repo](https://github.com/ajcousins/light-lookup)
-
-## Design and Development
-- Light lookup is still very much a work in progress. I have been working on it alone for about a month and a half. It is still missing a lot of functionality: databases haven’t been populated and is still missing user registration and many other filtering methods.
-- Planning to structure the delivery in several phases which make sense to me. Version 1 is the minimum viable product, which is able to perform complex queries, add a basic manufacturer profile and add single products. The aim was to release this version as quickly as possible in around a 3 week timeframe for some initial feedback from a few lighting designers.
-- Version 2 implements a way to bulk upload products as opposed to entering them one at a time- more on this below.
-- Later versions go on to introduce more product fields that allows finer filtering.
-
-
-## Technical Challenges
 
 ### Bulk Upload (Server side)
 - A technical challenge I had was the ability to upload multiple products to the database.
@@ -71,9 +69,33 @@ module.exports = parseCsv;
 - This lead me to learn about inline svgs in React and their ability to dynamically render. For product beam angles, this involved hooking up a slider's (from MaterialUI/ React component library) controlled input to state, and then plugging this value directly into the "svg component", which accepts the value as a prop. 
 - The component itself has a function which calculates the correct angle for each of the masks, creating the desired effect.
 
+### Other Technical Challenges
+- Incorporating Three.js into the UI as a way for the user to interactively see their constraints change in real-time.
+
 <!--INSERT IMAGE-->
 
-## Working in a Test Environment
+## Design and Development
+- When planning Light Lookup, the app had a long list of features I wanted to implement. However I quickly realised it would be several months before I would be able to deploy anything useable.
+- I get around this, I have planned to structure the delivery in several phases which make sense to me. Version 1 is the minimum viable product, which is able to perform complex queries, add a basic manufacturer profile and add single products. The aim was to release this version as quickly as possible in around a 3 week timeframe for some initial feedback from a few lighting designers.
+
+![alt text](https://github.com/ajcousins/roh-presentation/blob/main/planning_01.png "Project Planning")
+
+- Version 1.1 implements a way to bulk upload products as opposed to entering them one at a time- more on this below.
+- As it stands, Light lookup is still very much a work in progress. I have been working on it alone for about a month and a half. It is still missing a lot of functionality: databases haven’t been populated and is still missing user registration and many other filtering methods.
+- Later versions go on to introduce more product fields that allows finer filtering, following some inital feedback.
+
+## Resilience and Scalability
+- I opted to use GraphQL with scalability in mind for Light Lookup, mainly for its ability to be selective with what data it returns, as opposed to a RestAPI, which will 'over-fetch' data. The ‘Product’ database model already has quite a lot of fields, and a lot of this data is not relevant for a basic search.
+- I am also expecting that products will link to other parts of the database, for example compatible lamps/ bulbs, which will then have their own fields and criteria which will need to be fetched separately. This also plays to GraphQL’s strengths: it's ability to link to other models from a single root query.
+- In practice, when a user queries the database using the app, there will be multiple server requests for smaller chunks of data:
+  1. First query returns the number of objects in the list. This is mainly to help set up the pagination navigation for the UI.
+  1. The app queries again for just the first page of objects, which returns more technical information about each product. 
+  1. Subsequently, there can be further/ optional queries which are carried out when the user expands the product tile, giving more in-depth information: metrics/ supplier information, compatible equipment etc. 
+- This method makes sense to me, bearing scalability in mind, allowing more detailed technical information to be retrieved per page load or on product tile expand.
+- Another issue related to scalability was the upload of user images for products and manufacturer logos. I used Firebase to store my images, and needed to ensure the space was not taken up by huge images. On a past project, image resizing was done on the server before being forwarded to AWS S3. However, in this case the image wasn't being passed to my back-end, so it made sense to resize the image on the client-side first before uploading to Firebase.
+- Image resizing was a bit of a challenge for me, as it involved passing an image buffer to state and then formatting this before it is uploaded to Firebase. Using TypeScript on the frontend helped a lot in this situation and helped flagged bugs by typechecking.
+
+## Working in a Test Environment and Moving to Deployment
 - I intended to implement TDD on Light Lookup, but quickly realised it would be very time consuming to do this for every single component. My intuition also told me it was better to manually test for visual UI elements in the web browser. An automated test wouldn’t necessarily let me know if a navigation element overflowed for example.
 - I focused TDD mainly on the data collection checkers on the backend as I expect the data would eventually come from a variety of different manufacturers in all shapes and sizes or through web scraping. 
 
@@ -84,13 +106,6 @@ module.exports = parseCsv;
 <!-- code examples -->
 
 
-## Resilience and Scalability
-- I opted to use GraphQL with scalability in mind for Light Lookup, mainly for its ability to be selective with what data it returns, as opposed to a RestAPI, which will retrieve everything. The ‘Product’ database model already has quite a lot of fields, and a lot of this data is not relevant for a basic search.
-- I am also expecting that products will link to other parts of the database, for example compatible lamps/ bulbs, which will then have their own fields and criteria. This also plays to GraphQL’s strengths.
-- In practice, when a user queries the database using the app, there will be multiple server requests for smaller chunks of data:
-  1. First query returns the number of objects in the list. This is mainly to help set up the pagination navigation for the UI.
-  1. The app queries again for just the first page of objects, which returns more technical information about each product. 
-  1. Going forward, there will be a third query which is carried out when the user expands the product tile, giving more in-depth information: metrics/ supplier information, compatible equipment etc. 
-- This method makes sense to me, bearing scalability in mind, allowing more detailed technical information to be retrieved per page load or on product tile expand.
+
 
 
